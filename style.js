@@ -1,46 +1,108 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
+import { overflowBreakWord, messageBaseStyle } from '../../utils/styles';
 import {
-  whatsappThemeColor,
-  viewerBackgroundColor,
-  viewerDarkBackgroundColor,
+  systemBackgroundColor,
+  systemDarkBackgroundColor,
+  activeUserBackgroundColor,
+  activeUserDarkBackgroundColor,
 } from '../../utils/colors';
-import { messageBaseStyle } from '../../utils/styles';
 
-import bgImage from '../../img/bg.png';
-import bgDarkImage from '../../img/bg-dark.png';
+const Item = styled.li`
+  margin-top: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+  ${props =>
+    props.isSystem &&
+    css`
+      text-align: center;
+    `}
+  ${props =>
+    props.isActiveUser &&
+    css`
+      text-align: right;
+    `}
+  ${props =>
+    props.sameAuthorAsPrevious &&
+    css`
+      margin-top: 0.25rem;
+    `}
 
-const Container = styled.div`
-  flex-grow: 1;
-  padding: 0 1rem;
-  background-color: ${viewerBackgroundColor};
-  background-image: url(${bgImage});
+  a {
+    color: #68bbe4;
+    text-decoration: underline;
+  }
+`;
+
+const Bubble = styled.div`
+  ${messageBaseStyle}
+
+  background-color: white;
+  ${props =>
+    props.isSystem &&
+    css`
+      background-color: ${systemBackgroundColor};
+    `}
+  ${props =>
+    props.isActiveUser &&
+    css`
+      text-align: left;
+      background-color: ${activeUserBackgroundColor};
+    `}
+
+  @media (max-width: 699px) {
+    flex-direction: column;
+  }
 
   @media (min-width: 700px) {
-    padding: 0 10%;
+    max-width: 65%;
   }
 
   @media (prefers-color-scheme: dark) {
-    background-color: ${viewerDarkBackgroundColor};
-    background-image: url(${bgDarkImage});
+    background-color: #262d31;
+    color: #f1f1f2;
+    ${props =>
+      props.isSystem &&
+      css`
+        background-color: ${systemDarkBackgroundColor};
+        color: #fad964;
+      `}
+    ${props =>
+      props.isActiveUser &&
+      css`
+        background-color: ${activeUserDarkBackgroundColor};
+      `}
   }
 `;
 
-const List = styled.ul`
-  padding: 0;
-  list-style: none;
+const Wrapper = styled.div`
+  flex: 1 1 auto;
 `;
 
-const P = styled.p`
-  text-align: center;
+const Author = styled.div`
+  margin-bottom: 0.25rem;
+  font-weight: bold;
+  font-size: 75%;
+  color: ${props => props.color};
 `;
 
-const Info = styled.span`
-  ${messageBaseStyle}
+const Message = styled.div`
+  ${overflowBreakWord}
 
-  text-align: center;
-  background-color: ${whatsappThemeColor};
-  color: white;
+  white-space: pre-wrap;
 `;
 
-export { Container, List, P, Info };
+const Date = styled.time`
+  flex: 0 0 auto;
+  align-self: flex-end;
+  margin-left: 1rem;
+  white-space: nowrap;
+  font-size: 75%;
+  opacity: 0.6;
+
+  @media (max-width: 699px) {
+    margin-top: 0.25rem;
+  }
+`;
+
+export { Item, Bubble, Wrapper, Author, Message, Date };
